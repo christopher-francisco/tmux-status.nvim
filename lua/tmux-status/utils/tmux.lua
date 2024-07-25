@@ -12,6 +12,9 @@ M._USER = nil
 ---@type string[]?
 M._windows = nil
 
+---@type string?
+M._session = nil
+
 ---Whether we're inside a tmux session or not
 ---@return boolean
 function M.is_tmux()
@@ -22,20 +25,9 @@ end
 ---@param opts TmuxStatusComponentWindow
 ---@return string[]
 function M.list_windows(opts)
-
   if not M._USER then
     M._USER = vim.fn.environ().USER
   end
-
-  -- PERF: can we make this async?
-  -- local output = vim.system({
-  --   'tmux',
-  --   'list-windows',
-  --   '-F',
-  --   "#{s|^" .. M._USER .. "|~|:#{b:pane_current_path}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
-  -- }, { text = true }):wait()
-
-  -- return split(output.stdout, "[^\r\n]+")
 
   vim.system(
     {
@@ -54,15 +46,20 @@ function M.list_windows(opts)
 end
 
 function M.get_session()
-  ---PERF: cache response?
-  local output = vim.system({
-    'tmux',
-    'display-message',
-    '-p',
-    '#S',
-  }, { text = true }):wait()
+  vim.system(
+    {
+      'tmux',
+      'display-message',
+      '-p',
+      '#S',
+    },
+    { text = true },
+    function(obj)
+      M._session = obj.stdout:gsub("[\n\r]", '')
+    end
+  )
 
-  return output.stdout:gsub("[\n\r]", '')
+  return M._session
 end
 
 ---comment
