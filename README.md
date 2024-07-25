@@ -9,6 +9,8 @@
 
 Keep your setup clean by having only 1 status bar.
 
+![image](https://github.com/user-attachments/assets/a2c08bea-fed9-4446-b5b3-9b382223ef24)
+
 ## ✨ Features
 
 * 🛠️ Integrate Tmux status directly into your Neovim statusline (i.e: [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim))
