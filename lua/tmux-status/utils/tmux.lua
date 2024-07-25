@@ -65,10 +65,11 @@ end
 ---comment
 ---@return boolean
 function M.is_status_off()
+  --PERF async
   local output = vim.system({
     'tmux',
-    'show-options',
-    '-gv',
+    'show',
+    '-v',
     'status'
   }, { text = true }):wait()
 

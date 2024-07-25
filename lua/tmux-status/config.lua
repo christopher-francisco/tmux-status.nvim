@@ -19,7 +19,8 @@
 ---@field window TmuxStatusComponentWindow
 ---@field session TmuxStatusComponentSession
 ---@field colors TmuxStatusComponentColors
----@field force_show boolean Show even if Tmux status is `on`
+---@field force_show boolean Show tmux-status components even if Tmux status is `on`
+---@field manage_tmux_status boolean
 
 local M = {}
 
@@ -43,6 +44,7 @@ M.default_options = {
     session = "#a7c080",
   },
   force_show = false,
+  manage_tmux_status = true,
 }
 
 return M

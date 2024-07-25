@@ -20,8 +20,8 @@ end
 function M.setup(opts)
   M._config = vim.tbl_deep_extend('force', M._config, opts)
 
-  require('tmux-status.autocmds').register()
-  require('tmux-status.highlights').create_hightlights(opts.colors)
+  require('tmux-status.autocmds').register(M._config.manage_tmux_status)
+  require('tmux-status.highlights').create_hightlights(M._config.colors)
 end
 
 function M.show()
