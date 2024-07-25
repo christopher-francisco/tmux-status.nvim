@@ -45,10 +45,9 @@ function M.register(enabled)
   end
 
   status_off()
+  create_off_autocmd({ "FocusGained", "VimResume" })
 
-  create_on_autocmd({ "VimLeavePre", "FocusLost" })
-  create_off_autocmd("FocusGained")
-
+  create_on_autocmd({ "VimLeavePre", "FocusLost", "VimSuspend" })
 end
 
 return M
