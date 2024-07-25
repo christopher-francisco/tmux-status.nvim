@@ -27,7 +27,7 @@ local M = {}
 ---@type TmuxStatusOptions
 M.default_options = {
   window = {
-    separator = "   ",
+    separator = "  ",
     icon_zoom = "",
     icon_mark = "",
     icon_bell = "",
