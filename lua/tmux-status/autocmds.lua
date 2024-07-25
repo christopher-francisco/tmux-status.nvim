@@ -40,9 +40,9 @@ end
 
 ---@param enabled boolean
 function M.register(enabled)
-  -- if not enabled then
-  --   return
-  -- end
+  if not enabled then
+    return
+  end
 
   status_off()
 
