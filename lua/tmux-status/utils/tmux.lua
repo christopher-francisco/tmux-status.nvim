@@ -1,9 +1,3 @@
--- TODO: use `tmux show -g @component` instead so the exact same component can be shared
-
--- Other useful commands for getting info out of tmux
--- list-windows
--- display-message
-
 local split = require('tmux-status.utils.str').split
 
 ---@type table<"dir"|"name", string>
@@ -14,20 +8,28 @@ local text_map = {
 
 local M = {}
 
+M._async_cache = {}
+
+---@type boolean We 
+M._async_cache.status_off = true
+
 ---@type string?
-M._USER = nil
+M._async_cache.USER = nil
 
 ---@type string[]?
-M._windows = nil
+M._async_cache.windows = nil
 
 ---@type string?
-M._session = nil
+M._async_cache.session = nil
 
 ---@type string?
-M._datetime = nil
+M._async_cache.datetime = nil
 
 ---@type string?
-M._battery = nil
+M._async_cache.battery = nil
+
+---@type table<string, string?>
+M._async_cache.rendered = {}
 
 ---Escape characters that can break statusline
 ---@param str string
@@ -50,8 +52,6 @@ function M.is_tmux()
   return vim.fn.has_key(vim.fn.environ(), 'TMUX') and true or false
 end
 
----@type table<string, string?>
-M._rendered = {}
 
 ---@param format string
 ---@param cache_key string
@@ -66,19 +66,19 @@ function M.render_format(format, cache_key)
     },
     { text = true },
     function (out)
-      M._rendered[cache_key] = remove_newline(escape(out.stdout))
+      M._async_cache.rendered[cache_key] = remove_newline(escape(out.stdout))
     end
   )
 
-  return M._rendered[cache_key]
+  return M._async_cache.rendered[cache_key]
 end
 
 ---Get a list of window names with their flags replaced for the correct icons
 ---@param opts TmuxStatusComponentWindow
 ---@return string[]
 function M.list_windows(opts)
-  if not M._USER then
-    M._USER = vim.fn.environ().USER
+  if not M._async_cache.USER then
+    M._async_cache.USER = vim.fn.environ().USER
   end
 
   vim.system(
@@ -86,15 +86,15 @@ function M.list_windows(opts)
       'tmux',
       'list-windows',
       '-F',
-      "#{s|^" .. M._USER .. "|~|:#{" .. text_map[opts.text] .. "}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
+      "#{s|^" .. M._async_cache.USER .. "|~|:#{" .. text_map[opts.text] .. "}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
     },
     { text = true },
     function (output)
-      M._windows = split(output.stdout, "[^\r\n]+")
+      M._async_cache.windows = split(output.stdout, "[^\r\n]+")
     end
   )
 
-  return M._windows
+  return M._async_cache.windows
 end
 
 function M.get_session()
@@ -107,11 +107,11 @@ function M.get_session()
     },
     { text = true },
     function(obj)
-      M._session = obj.stdout:gsub("[\n\r]", '')
+      M._async_cache.session = obj.stdout:gsub("[\n\r]", '')
     end
   )
 
-  return M._session
+  return M._async_cache.session
 end
 
 ---@param opts TmuxStatusComponentDatetime
@@ -121,11 +121,11 @@ function M.get_datetime(opts)
     { 'date', "+" .. opts.format },
     { text = true },
     function (out)
-        M._datetime = out.stdout:gsub("[\n\r]", '')
+        M._async_cache.datetime = out.stdout:gsub("[\n\r]", '')
     end
   )
 
-  return M._datetime
+  return M._async_cache.datetime
 end
 
 ---@return string
@@ -136,25 +136,30 @@ function M.get_battery()
     function (out)
       local _, _, batt = out.stdout:find("(%d+%%)")
 
-       M._battery = remove_newline(escape(batt))
+       M._async_cache.battery = remove_newline(escape(batt))
     end
   )
 
-  return M._battery
+  return M._async_cache.battery
 end
 
 ---Whether Tmux status is set to off
 ---@return boolean
 function M.is_status_off()
-  --PERF async
-  local output = vim.system({
-    'tmux',
-    'show',
-    '-v',
-    'status'
-  }, { text = true }):wait()
+  vim.system(
+    {
+      'tmux',
+      'show',
+      '-v',
+      'status'
+    },
+    { text = true },
+    function (out)
+      M._async_cache.status_off = out.stdout:find('off') and true or false
+    end
+  )
 
-  return string.find(output.stdout, 'off') and true or false
+  return M._async_cache.status_off
 end
 
 return M
