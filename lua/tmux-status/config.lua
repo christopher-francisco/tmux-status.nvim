@@ -11,6 +11,7 @@
 ---@field icon_bell string
 ---@field icon_mute string
 ---@field icon_activity string
+---@field text "dir"|"name"
 
 ---@class TmuxStatusComponentSession
 ---@field icon string
@@ -33,6 +34,7 @@ M.default_options = {
     icon_bell = "",
     icon_mute = "",
     icon_activity = "",
+    text = "dir"
   },
   session = {
     icon = ""
