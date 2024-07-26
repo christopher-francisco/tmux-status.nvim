@@ -69,10 +69,13 @@ local opts = {
 
 ## 🧩 Components
 
-| Component                               | Description                                                                                                                               |
-| ---                                     | ---                                                                                                                                       |
-| `require('tmux-status').tmux_windows()` | Returns Tmux windows with their highlight groups (active, recently inactive, inactive) and the icon corresponding to their window flags   |
-| `require('tmux-status').tmux_session()` | Returns Tmux session name with its highlight group                                                                                        |
+| Component                                           | Description                                                                                                                               |
+| ---                                                 | ---                                                                                                                                       |
+| `require('tmux-status').tmux_windows()`             | Returns Tmux windows with their highlight groups (active, recently inactive, inactive) and the icon corresponding to their window flags   |
+| `require('tmux-status').tmux_session()`             | Returns Tmux session name with its highlight group                                                                                        |
+| `require('tmux-status').tmux_datetime()`            | Returns the datetime (see `man date`) with its highlight group                                                                            |
+| `require('tmux-status').tmux_battery()`             | Returns the battery (requires `pmset`, may not be availabe in all OS) with its highlight group                                            |
+| `require('tmux-status').tmux_render_format(format)` | Advanced component for those who want extra control. Requires familiarity with Tmux configurations. See [Advance usage](#advance-usage)   |
 
 ## ⚙️  Configuration
 
@@ -84,21 +87,31 @@ local opts = {
 ---@type TmuxStatusOptions
 local defaults = {
   window = {
-    separator = "   ",
+    separator = "  ",
     icon_zoom = "",
     icon_mark = "",
     icon_bell = "",
     icon_mute = "",
     icon_activity = "",
+    text = "dir",
   },
   session = {
     icon = ""
+  },
+  datetime = {
+    icon = "󱑍",
+    format = "%a %d %b %k:%m",
+  },
+  battery = {
+    icon = "󰂎",
   },
   colors = {
     window_active = "#e69875",
     window_inactive = "#859289",
     window_inactive_recent = "#3f5865",
     session = "#a7c080",
+    datetime = "#7a8478",
+    battery = "#7a8478",
   },
   force_show = false,        -- Force components to be shown regardless of Tmux status
   manage_tmux_status = true, -- Set to false if you do NOT want the plugin to turn Tmux status on/off
@@ -108,3 +121,18 @@ local defaults = {
 <!-- config:end -->
 
 </details>
+
+## Advance usage
+
+Advanced components for those who want extra control. Must be familiar with Tmux config. Renders a format. See FORMATS in tmux manual.
+
+```lua
+local lualine_x = {
+  {
+    function ()
+      return '%#my_custom_highlight_title# Catppuccin: %#my_custom_highlight_description#' .. require('tmux-status').tmux_render_format('@catppuccin_flavour')
+    end,
+    cond = require('tmux-status').show,
+  },
+}
+```

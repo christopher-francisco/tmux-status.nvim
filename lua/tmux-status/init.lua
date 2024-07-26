@@ -68,4 +68,18 @@ function M.tmux_battery()
   return require('tmux-status.components.battery').get_tmux_battery(M._config.battery)
 end
 
+---Advanced components for those who want extra control. Must be familiar with
+---Tmux config. Renders a format. See FORMATS in tmux manual
+---
+---Example:
+---```lua
+---tmux_render_format("window_name") -- renders #{window_name}
+---tmux_render_format("@my_custom_option") -- renders #{@my_custom_option}
+---```
+---@param format any
+---@return string
+function M.tmux_render_format(format)
+  return require('tmux-status.components.render_format').render_format(format)
+end
+
 return M

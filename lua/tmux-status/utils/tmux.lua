@@ -54,8 +54,9 @@ end
 M._rendered = {}
 
 ---@param format string
+---@param cache_key string
 ---@return string
-function M.render_format(format, key)
+function M.render_format(format, cache_key)
   vim.system(
     {
       'tmux',
@@ -65,11 +66,11 @@ function M.render_format(format, key)
     },
     { text = true },
     function (out)
-      M._rendered[key] = remove_newline(escape(out.stdout))
+      M._rendered[cache_key] = remove_newline(escape(out.stdout))
     end
   )
 
-  return M._rendered[key]
+  return M._rendered[cache_key]
 end
 
 ---Get a list of window names with their flags replaced for the correct icons
