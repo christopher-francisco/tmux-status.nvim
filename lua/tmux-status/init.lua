@@ -67,4 +67,5 @@ function M.tmux_battery()
 
   return require('tmux-status.components.battery').get_tmux_battery(M._config.battery)
 end
+
 return M

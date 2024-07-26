@@ -29,10 +29,47 @@ M._datetime = nil
 ---@type string?
 M._battery = nil
 
+---Escape characters that can break statusline
+---@param str string
+---@return string
+local function escape(str)
+  -- Yep, it takes 4 %s to escape it properly
+  return str:gsub("%%", "%%%%") or "[error]"
+end
+
+---Remove \r\n
+---@param str string
+---@return string
+local function remove_newline(str)
+  return str:gsub("[\n\r]", '') or "[error]"
+end
+
 ---Whether we're inside a tmux session or not
 ---@return boolean
 function M.is_tmux()
   return vim.fn.has_key(vim.fn.environ(), 'TMUX') and true or false
+end
+
+---@type table<string, string?>
+M._rendered = {}
+
+---@param format string
+---@return string
+function M.render_format(format, key)
+  vim.system(
+    {
+      'tmux',
+      'display-message',
+      '-p',
+      '#{' .. format .. '}',
+    },
+    { text = true },
+    function (out)
+      M._rendered[key] = remove_newline(escape(out.stdout))
+    end
+  )
+
+  return M._rendered[key]
 end
 
 ---Get a list of window names with their flags replaced for the correct icons
@@ -93,21 +130,18 @@ end
 ---@return string
 function M.get_battery()
   vim.system(
-    -- { 'pmset', '-g', 'batt', '|', 'awk', '{print $3}', '|', 'sed', '\'s/;//\'' },
-    -- { 'pmset', '-g', 'batt', '|', 'awk', '{print $3}' },
-    { 'tmux', 'show', '-gv', '@c_battery' },
+    { 'pmset', '-g', 'batt' },
     { text = true },
     function (out)
-        M._battery = out.stdout:gsub("[\n\r]", '')
+      local _, _, batt = out.stdout:find("(%d+%%)")
+
+       M._battery = remove_newline(escape(batt))
     end
   )
 
-  -- vim.o.cmdheight=1
-  -- print(M._battery)
-  -- return "Foo"
-
   return M._battery
 end
+
 ---Whether Tmux status is set to off
 ---@return boolean
 function M.is_status_off()

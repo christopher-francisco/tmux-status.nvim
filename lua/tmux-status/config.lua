@@ -63,7 +63,7 @@ M.default_options = {
     window_inactive_recent = "#3f5865",
     session = "#a7c080",
     datetime = "#7a8478",
-    battery = "#d3c6aa",
+    battery = "#7a8478",
   },
   force_show = false,
   manage_tmux_status = true,
