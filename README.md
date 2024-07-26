@@ -130,7 +130,8 @@ Advanced components for those who want extra control. Must be familiar with Tmux
 local lualine_x = {
   {
     function ()
-      return '%#my_custom_highlight_title# Catppuccin: %#my_custom_highlight_description#' .. require('tmux-status').tmux_render_format('@catppuccin_flavour')
+      local text = '%#my_custom_highlight_title# Catppuccin: %#my_custom_highlight_description#'
+      return text .. require('tmux-status').tmux_render_format('@catppuccin_flavour')
     end,
     cond = require('tmux-status').show,
   },
