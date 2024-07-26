@@ -1,3 +1,6 @@
+local is_tmux = require('tmux-status.utils.tmux').is_tmux
+local is_status_off = require('tmux-status.utils.tmux').is_status_off
+
 local M = {}
 
 ---This controls whether the components should be shown given
@@ -25,16 +28,16 @@ function M.setup(opts)
 end
 
 function M.show()
-  -- local should_show = require('tmux-status.utils.tmux').is_status_off() or M._config.force_show
-  local should_show = (require('tmux-status.utils.tmux').is_status_off() and M._show) or M._config.force_show
+  -- local should_show = is_status_off() or M._config.force_show
+  local should_show = (is_status_off() and M._show) or M._config.force_show
 
-  return require('tmux-status.utils.tmux').is_tmux() and should_show
+  return is_tmux() and should_show
 end
 
 ---Lualine component
 ---@return string
 function M.tmux_windows()
-  if not require('tmux-status.utils.tmux').is_tmux() then
+  if not is_tmux() then
     return get_error_message()
   end
 
@@ -42,11 +45,26 @@ function M.tmux_windows()
 end
 
 function M.tmux_session()
-  if not require('tmux-status.utils.tmux').is_tmux() then
+  if not is_tmux() then
     return get_error_message()
   end
 
   return require('tmux-status.components.session').get_tmux_session(M._config.session)
 end
 
+function M.tmux_datetime()
+  if not is_tmux() then
+    return get_error_message()
+  end
+
+  return require('tmux-status.components.datetime').get_tmux_datetime(M._config.datetime)
+end
+
+function M.tmux_battery()
+  if not is_tmux() then
+    return get_error_message()
+  end
+
+  return require('tmux-status.components.battery').get_tmux_battery(M._config.battery)
+end
 return M

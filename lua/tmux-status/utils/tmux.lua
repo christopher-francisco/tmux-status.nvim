@@ -1,3 +1,5 @@
+-- TODO: use `tmux show -g @component` instead so the exact same component can be shared
+
 -- Other useful commands for getting info out of tmux
 -- list-windows
 -- display-message
@@ -20,6 +22,12 @@ M._windows = nil
 
 ---@type string?
 M._session = nil
+
+---@type string?
+M._datetime = nil
+
+---@type string?
+M._battery = nil
 
 ---Whether we're inside a tmux session or not
 ---@return boolean
@@ -68,7 +76,39 @@ function M.get_session()
   return M._session
 end
 
----comment
+---@param opts TmuxStatusComponentDatetime
+---@return string
+function M.get_datetime(opts)
+  vim.system(
+    { 'date', "+" .. opts.format },
+    { text = true },
+    function (out)
+        M._datetime = out.stdout:gsub("[\n\r]", '')
+    end
+  )
+
+  return M._datetime
+end
+
+---@return string
+function M.get_battery()
+  vim.system(
+    -- { 'pmset', '-g', 'batt', '|', 'awk', '{print $3}', '|', 'sed', '\'s/;//\'' },
+    -- { 'pmset', '-g', 'batt', '|', 'awk', '{print $3}' },
+    { 'tmux', 'show', '-gv', '@c_battery' },
+    { text = true },
+    function (out)
+        M._battery = out.stdout:gsub("[\n\r]", '')
+    end
+  )
+
+  -- vim.o.cmdheight=1
+  -- print(M._battery)
+  -- return "Foo"
+
+  return M._battery
+end
+---Whether Tmux status is set to off
 ---@return boolean
 function M.is_status_off()
   --PERF async
@@ -79,7 +119,6 @@ function M.is_status_off()
     'status'
   }, { text = true }):wait()
 
-  -- return output.stdout:find('off')
   return string.find(output.stdout, 'off') and true or false
 end
 

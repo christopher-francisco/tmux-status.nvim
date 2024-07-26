@@ -3,6 +3,8 @@
 ---@field window_inactive string
 ---@field window_inactive_recent string
 ---@field session string
+---@field datetime string
+---@field battery string
 
 ---@class TmuxStatusComponentWindow
 ---@field separator string
@@ -16,9 +18,18 @@
 ---@class TmuxStatusComponentSession
 ---@field icon string
 
+---@class TmuxStatusComponentDatetime
+---@field icon string
+---@field format string
+
+---@class TmuxStatusComponentBattery
+---@field icon string
+
 ---@class TmuxStatusOptions
 ---@field window TmuxStatusComponentWindow
 ---@field session TmuxStatusComponentSession
+---@field datetime TmuxStatusComponentDatetime
+---@field battery TmuxStatusComponentBattery
 ---@field colors TmuxStatusComponentColors
 ---@field force_show boolean Show tmux-status components even if Tmux status is `on`
 ---@field manage_tmux_status boolean
@@ -39,11 +50,20 @@ M.default_options = {
   session = {
     icon = ""
   },
+  datetime = {
+    icon = "󱑍",
+    format = "%a %d %b %k:%m",
+  },
+  battery = {
+    icon = "󰂎",
+  },
   colors = {
     window_active = "#e69875",
     window_inactive = "#859289",
     window_inactive_recent = "#3f5865",
     session = "#a7c080",
+    datetime = "#7a8478",
+    battery = "#d3c6aa",
   },
   force_show = false,
   manage_tmux_status = true,

@@ -2,10 +2,15 @@ local M = {}
 
 ---@param colors TmuxStatusComponentColors
 function M.create_hightlights(colors)
-  vim.cmd.highlight('tmux_status_window_active guifg=' .. colors.window_active)
-  vim.cmd.highlight('tmux_status_window_inactive guifg=' .. colors.window_inactive)
-  vim.cmd.highlight('tmux_status_window_inactive_recent guifg=' .. colors.window_inactive_recent)
-  vim.cmd.highlight('tmux_status_session guifg=' .. colors.session)
+  for name, value in pairs(colors) do
+    vim.cmd.highlight('tmux_status_' .. name .. ' guifg=' .. value)
+  end
+end
+
+---@param name string
+---@return string
+function M.get_highlight(name)
+  return "%#" .. name .. "#"
 end
 
 return M

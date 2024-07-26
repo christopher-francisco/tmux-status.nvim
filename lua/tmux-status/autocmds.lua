@@ -1,15 +1,5 @@
 local M = {}
 
--- TODO: do these
-  -- create autocmds to status off/on on following events
-  -- vimenter
-  -- vimleave
-  -- if there's only 1 pane in the window 
-  -- or if pane is zoomed in
-  -- pane zommed in
-  -- pane zommed out
-
-
 local function status_off()
   vim.system({ 'tmux', 'set', 'status', 'off' }, {}, function () end)
 end
