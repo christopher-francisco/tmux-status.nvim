@@ -15,6 +15,7 @@ Keep your setup clean by having only 1 status bar.
 
 * 🛠️ Integrate Tmux status directly into your Neovim statusline (i.e: [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim))
 * 👀 Automatically hide/show Tmux status so that there's only ever 1 line
+* 📍 Both Neovim and Tmux command line in the same location (tell them apart through color)
 * 🌐 Component-based design for flexibility and portability
 * 🎨 Customize colors
 * 🖼️ Customize Tmux status windows flag with your favorite icons
