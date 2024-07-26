@@ -27,7 +27,7 @@ Keep your setup clean by having only 1 status bar.
 
 ## 📦 Installation
 
-### (lazy.nvim)[https://github.com/folke/lazy.nvim]
+### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
   {
