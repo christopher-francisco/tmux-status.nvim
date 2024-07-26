@@ -49,7 +49,7 @@ end
 ---Whether we're inside a tmux session or not
 ---@return boolean
 function M.is_tmux()
-  return vim.fn.has_key(vim.fn.environ(), 'TMUX') and true or false
+  return vim.fn.has_key(vim.fn.environ(), 'TMUX') == 1
 end
 
 
