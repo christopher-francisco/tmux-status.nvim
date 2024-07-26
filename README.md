@@ -9,7 +9,7 @@
 
 Keep your setup clean by having only 1 status bar.
 
-https://github.com/user-attachments/assets/a2c08bea-fed9-4446-b5b3-9b382223ef24
+https://github.com/user-attachments/assets/65e9026f-ecda-456e-a894-cbac4f919a83
 
 ## ✨ Features
 
