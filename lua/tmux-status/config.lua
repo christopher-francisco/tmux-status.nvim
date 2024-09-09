@@ -52,7 +52,7 @@ M.default_options = {
   },
   datetime = {
     icon = "󱑍",
-    format = "%a %d %b %k:%m",
+    format = "%a %d %b %k:%M",
   },
   battery = {
     icon = "󰂎",
