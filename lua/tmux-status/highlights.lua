@@ -6,7 +6,7 @@ function M.create_hightlights(colors)
     pattern = "*",
     callback = function()
       for name, value in pairs(colors) do
-        vim.cmd.highlight("tmux_status_" .. name .. " guifg=" .. value)
+        vim.cmd.highlight("tmux_status_" .. name .. " guifg=" .. value.fg .. " guibg=" .. value.bg)
       end
     end,
   })
