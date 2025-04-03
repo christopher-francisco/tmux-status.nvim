@@ -1,8 +1,8 @@
 local split = require('tmux-status.utils.str').split
 
-local function table_contains(table, element)
-  for _, value in pairs(table) do
-    if value == element then
+local function table_contains_key(table, element)
+  for key, _ in pairs(table) do
+    if key == element then
       return true
     end
   end
@@ -93,7 +93,7 @@ function M.list_windows(opts)
 
   ---@type string
   local format_string = opts.text
-  if table_contains(text_map, opts.text) then
+  if table_contains_key(text_map, opts.text) then
     format_string = text_map[opts.text]
   end
 
