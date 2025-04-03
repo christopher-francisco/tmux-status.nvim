@@ -13,7 +13,7 @@
 ---@field icon_bell string
 ---@field icon_mute string
 ---@field icon_activity string
----@field text "dir"|"name"
+---@field text "dir"|"name"|"index_and_name"
 
 ---@class TmuxStatusComponentSession
 ---@field icon string

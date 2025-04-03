@@ -4,6 +4,7 @@ local split = require('tmux-status.utils.str').split
 local text_map = {
   dir = "b:pane_current_path",
   name = "window_name",
+  index_and_name = "#I:#W",
 }
 
 local M = {}
