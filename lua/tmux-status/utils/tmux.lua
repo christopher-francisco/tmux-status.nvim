@@ -2,9 +2,9 @@ local split = require('tmux-status.utils.str').split
 
 ---@type table<"dir"|"name", string>
 local text_map = {
-  dir = '#{b:pane_current_path}',
-  name = '#{window_name}',
-  index_and_name = "#I:#W",
+  dir = "b:pane_current_path",
+  name = "window_name",
+  index_and_name = "#{}#I:#W",
 }
 
 local M = {}
@@ -87,7 +87,7 @@ function M.list_windows(opts)
       'tmux',
       'list-windows',
       '-F',
-      "#{s|^" .. M._async_cache.USER .. "|~|:" .. text_map[opts.text] .. "}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
+      "#{s|^" .. M._async_cache.USER .. "|~|:#{" .. text_map[opts.text] .. "}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
     },
     { text = true },
     function (output)
