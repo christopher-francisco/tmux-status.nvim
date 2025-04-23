@@ -1,10 +1,10 @@
 ---@class TmuxStatusComponentColors
----@field window_active string
----@field window_inactive string
----@field window_inactive_recent string
----@field session string
----@field datetime string
----@field battery string
+---@field window_active table
+---@field window_inactive table
+---@field window_inactive_recent table
+---@field session table
+---@field datetime table
+---@field battery table
 
 ---@class TmuxStatusComponentWindow
 ---@field separator string
@@ -45,10 +45,10 @@ M.default_options = {
     icon_bell = "",
     icon_mute = "",
     icon_activity = "",
-    text = "dir"
+    text = "dir",
   },
   session = {
-    icon = ""
+    icon = "",
   },
   datetime = {
     icon = "󱑍",
@@ -58,12 +58,30 @@ M.default_options = {
     icon = "󰂎",
   },
   colors = {
-    window_active = "#e69875",
-    window_inactive = "#859289",
-    window_inactive_recent = "#3f5865",
-    session = "#a7c080",
-    datetime = "#7a8478",
-    battery = "#7a8478",
+    window_active = {
+      fg = "#e69875",
+      bg = "#1F2430",
+    },
+    window_inactive = {
+      fg = "#859289",
+      bg = "#1F2430",
+    },
+    window_inactive_recent = {
+      fg = "#3f5865",
+      bg = "#1F2430",
+    },
+    session = {
+      fg = "#a7c080",
+      bg = "#1F2430",
+    },
+    datetime = {
+      fg = "#7a8478",
+      bg = "#1F2430",
+    },
+    battery = {
+      fg = "#7a8478",
+      bg = "#1F2430",
+    },
   },
   force_show = false,
   manage_tmux_status = true,
