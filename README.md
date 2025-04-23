@@ -93,6 +93,8 @@ local defaults = {
     icon_bell = "",
     icon_mute = "",
     icon_activity = "",
+    -- "dir" | "name" | "index_name"
+    -- if not listed above, text will be passed directly to tmux formatting
     text = "dir",
   },
   session = {

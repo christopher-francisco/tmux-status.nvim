@@ -1,9 +1,19 @@
 local split = require('tmux-status.utils.str').split
 
----@type table<"dir"|"name", string>
+local function table_contains_key(table, element)
+  for key, _ in pairs(table) do
+    if key == element then
+      return true
+    end
+  end
+  return false
+end
+
+---@type table<"dir"|"name"|"index_and_name", string>
 local text_map = {
   dir = "b:pane_current_path",
   name = "window_name",
+  index_and_name = "#{}#I:#W",
 }
 
 local M = {}
@@ -81,12 +91,18 @@ function M.list_windows(opts)
     M._async_cache.USER = vim.fn.environ().USER
   end
 
+  ---@type string
+  local format_string = opts.text
+  if table_contains_key(text_map, opts.text) then
+    format_string = text_map[opts.text]
+  end
+
   vim.system(
     {
       'tmux',
       'list-windows',
       '-F',
-      "#{s|^" .. M._async_cache.USER .. "|~|:#{" .. text_map[opts.text] .. "}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
+      "#{s|^" .. M._async_cache.USER .. "|~|:#{" .. format_string .. "}}#{s/!/ " .. opts.icon_bell .. "/:#{s/~/ " .. opts.icon_mute .. "/:#{s/M/ " .. opts.icon_mark .. "/:#{s/Z/ " .. opts.icon_zoom .. "/:#{s/#/ " .. opts.icon_activity .. "/:window_flags}}}}}",
     },
     { text = true },
     function (output)
