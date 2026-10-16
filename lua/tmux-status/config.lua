@@ -1,10 +1,10 @@
 ---@class TmuxStatusComponentColors
----@field window_active table
----@field window_inactive table
----@field window_inactive_recent table
----@field session table
----@field datetime table
----@field battery table
+---@field window_active string|{ fg?: string, bg?: string }
+---@field window_inactive string|{ fg?: string, bg?: string }
+---@field window_inactive_recent string|{ fg?: string, bg?: string }
+---@field session string|{ fg?: string, bg?: string }
+---@field datetime string|{ fg?: string, bg?: string }
+---@field battery string|{ fg?: string, bg?: string }
 
 ---@class TmuxStatusComponentWindow
 ---@field separator string
@@ -30,7 +30,7 @@
 ---@field session TmuxStatusComponentSession
 ---@field datetime TmuxStatusComponentDatetime
 ---@field battery TmuxStatusComponentBattery
----@field colors TmuxStatusComponentColors
+---@field colors TmuxStatusComponentColors|fun(): TmuxStatusComponentColors
 ---@field force_show boolean Show tmux-status components even if Tmux status is `on`
 ---@field manage_tmux_status boolean
 

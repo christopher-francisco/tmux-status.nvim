@@ -102,18 +102,20 @@ local defaults = {
   },
   datetime = {
     icon = "󱑍",
-    format = "%a %d %b %k:%m",
+    format = "%a %d %b %k:%M",
   },
   battery = {
     icon = "󰂎",
   },
+  -- Each color is a foreground ("#e69875") or a table with fg and/or bg. `colors` can also be a
+  -- function returning this table: it's called again on every colorscheme change.
   colors = {
-    window_active = "#e69875",
-    window_inactive = "#859289",
-    window_inactive_recent = "#3f5865",
-    session = "#a7c080",
-    datetime = "#7a8478",
-    battery = "#7a8478",
+    window_active = { fg = "#e69875", bg = "#1F2430" },
+    window_inactive = { fg = "#859289", bg = "#1F2430" },
+    window_inactive_recent = { fg = "#3f5865", bg = "#1F2430" },
+    session = { fg = "#a7c080", bg = "#1F2430" },
+    datetime = { fg = "#7a8478", bg = "#1F2430" },
+    battery = { fg = "#7a8478", bg = "#1F2430" },
   },
   force_show = false,        -- Force components to be shown regardless of Tmux status
   manage_tmux_status = true, -- Set to false if you do NOT want the plugin to turn Tmux status on/off
