@@ -73,7 +73,7 @@ local opts = {
 | ---                                                 | ---                                                                                                                                       |
 | `require('tmux-status').tmux_windows()`             | Returns Tmux windows with their highlight groups (active, recently inactive, inactive) and the icon corresponding to their window flags   |
 | `require('tmux-status').tmux_session()`             | Returns Tmux session name with its highlight group                                                                                        |
-| `require('tmux-status').tmux_datetime()`            | Returns the datetime (see `man date`) with its highlight group                                                                            |
+| `require('tmux-status').tmux_datetime()`            | Returns the datetime (see `man strftime`) with its highlight group                                                                        |
 | `require('tmux-status').tmux_battery()`             | Returns the battery (requires `pmset`, may not be availabe in all OS) with its highlight group                                            |
 | `require('tmux-status').tmux_render_format(format)` | Advanced component for those who want extra control. Requires familiarity with Tmux configurations. See [Advance usage](#advance-usage)   |
 
@@ -119,6 +119,9 @@ local defaults = {
   },
   force_show = false,        -- Force components to be shown regardless of Tmux status
   manage_tmux_status = true, -- Set to false if you do NOT want the plugin to turn Tmux status on/off
+  -- Components read a cache: tmux is polled on a timer, never while drawing the statusline
+  poll_interval = 1000,      -- ms between tmux reads (status, session, windows, rendered formats)
+  battery_interval = 60000,  -- ms between battery reads
 }
 ```
 

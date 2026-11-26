@@ -1,11 +1,21 @@
 local M = {}
 
+---Set tmux's status, then read it back at once so `show()` doesn't wait for the next poll
+---@param value "on"|"off"
+local function set_status(value)
+  pcall(vim.system, { 'tmux', 'set', 'status', value }, {}, vim.schedule_wrap(function()
+    if vim.v.exiting == vim.NIL then
+      require('tmux-status.utils.tmux').poll()
+    end
+  end))
+end
+
 local function status_off()
-  vim.system({ 'tmux', 'set', 'status', 'off' }, {}, function () end)
+  set_status('off')
 end
 
 local function status_on()
-  vim.system({ 'tmux', 'set', 'status', 'on' }, {}, function () end)
+  set_status('on')
 end
 
 ---@param event string|string[] see `:h events`

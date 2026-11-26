@@ -25,6 +25,7 @@ function M.setup(opts)
 
   require('tmux-status.autocmds').register(M._config.manage_tmux_status)
   require('tmux-status.highlights').create_hightlights(M._config.colors)
+  require('tmux-status.utils.tmux').start()
 end
 
 function M.show()

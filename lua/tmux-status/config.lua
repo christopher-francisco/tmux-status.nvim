@@ -33,6 +33,8 @@
 ---@field colors TmuxStatusComponentColors|fun(): TmuxStatusComponentColors
 ---@field force_show boolean Show tmux-status components even if Tmux status is `on`
 ---@field manage_tmux_status boolean
+---@field poll_interval integer How often to read tmux (status, session, windows), in ms
+---@field battery_interval integer How often to read the battery, in ms
 
 local M = {}
 
@@ -85,6 +87,8 @@ M.default_options = {
   },
   force_show = false,
   manage_tmux_status = true,
+  poll_interval = 1000,
+  battery_interval = 60000,
 }
 
 return M
